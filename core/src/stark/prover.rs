@@ -33,7 +33,7 @@ impl<SC: StarkConfig> Prover<SC> {
     pub fn commit_main(config: &SC, chips: &[Box<dyn AirChip<SC>>], segment: &mut Segment)
     where
         SC::Val: PrimeField32,
-        PcsProverData<SC>: Serialize,
+        PcsProverData<SC>: Serialize + DeserializeOwned,
     {
         // For each chip, generate the trace.
         let traces = chips

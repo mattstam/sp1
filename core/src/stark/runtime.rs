@@ -11,7 +11,6 @@ use crate::precompiles::sha256::{ShaCompressChip, ShaExtendChip};
 use crate::program::ProgramChip;
 use crate::runtime::Runtime;
 use crate::utils::AirChip;
-use p3_challenger::CanObserve;
 use serde::de::DeserializeOwned;
 use serde::Serialize;
 
@@ -95,7 +94,7 @@ impl Runtime {
         SC::Challenger: Clone,
         <SC::Pcs as Pcs<SC::Val, RowMajorMatrix<SC::Val>>>::Commitment: Send + Sync,
         <SC::Pcs as Pcs<SC::Val, RowMajorMatrix<SC::Val>>>::ProverData: Send + Sync,
-        PcsProverData<SC>: Serialize,
+        PcsProverData<SC>: Serialize + DeserializeOwned,
     {
         tracing::info!("nb_segments: {}", self.segments.len());
         let segment_chips = Self::segment_chips::<SC>();
