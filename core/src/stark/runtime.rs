@@ -104,57 +104,59 @@ impl Runtime {
                     .collect::<Vec<_>>()
             });
 
-        panic!("commit main for all segments");
+        let segment_main_data: Vec<MainData<SC>> = vec![];
 
-        // TODO: Observe the challenges in a tree-like structure for easily verifiable reconstruction
-        // in a map-reduce recursion setting.
-        tracing::info_span!("observe challenges for all segments").in_scope(|| {
-            segment_main_data.iter().map(|main_data| {
-                challenger.observe(main_data.main_commit.clone());
-            });
-        });
+        // panic!("commit main for all segments");
 
-        // We clone the challenger so that each segment can observe the same "global" challenges.
-        let proofs: Vec<SegmentDebugProof<SC>> = tracing::info_span!("proving all segments")
-            .in_scope(|| {
-                segment_main_data
-                    .into_iter()
-                    .enumerate()
-                    .map(|(i, main_data)| {
-                        tracing::info_span!("proving segment", segment = i).in_scope(|| {
-                            Prover::prove(
-                                config,
-                                &mut challenger.clone(),
-                                &segment_chips,
-                                main_data,
-                            )
-                        })
-                    })
-                    .collect()
-            });
+        // // TODO: Observe the challenges in a tree-like structure for easily verifiable reconstruction
+        // // in a map-reduce recursion setting.
+        // tracing::info_span!("observe challenges for all segments").in_scope(|| {
+        //     segment_main_data.iter().map(|main_data| {
+        //         challenger.observe(main_data.main_commit.clone());
+        //     });
+        // });
 
-        let global_chips = Self::global_chips::<SC>();
-        let global_main_data = tracing::info_span!("commit main for global segments")
-            .in_scope(|| Prover::commit_main(config, &global_chips, &mut self.global_segment));
-        let global_proof = tracing::info_span!("proving global segments").in_scope(|| {
-            Prover::prove(
-                config,
-                &mut challenger.clone(),
-                &global_chips,
-                global_main_data,
-            )
-        });
+        // // We clone the challenger so that each segment can observe the same "global" challenges.
+        // let proofs: Vec<SegmentDebugProof<SC>> = tracing::info_span!("proving all segments")
+        //     .in_scope(|| {
+        //         segment_main_data
+        //             .into_iter()
+        //             .enumerate()
+        //             .map(|(i, main_data)| {
+        //                 tracing::info_span!("proving segment", segment = i).in_scope(|| {
+        //                     Prover::prove(
+        //                         config,
+        //                         &mut challenger.clone(),
+        //                         &segment_chips,
+        //                         main_data,
+        //                     )
+        //                 })
+        //             })
+        //             .collect()
+        //     });
 
-        let mut all_permutation_traces = proofs
-            .into_iter()
-            .flat_map(|proof| proof.permutation_traces)
-            .collect::<Vec<_>>();
-        all_permutation_traces.extend(global_proof.permutation_traces);
+        // let global_chips = Self::global_chips::<SC>();
+        // let global_main_data = tracing::info_span!("commit main for global segments")
+        //     .in_scope(|| Prover::commit_main(config, &global_chips, &mut self.global_segment));
+        // let global_proof = tracing::info_span!("proving global segments").in_scope(|| {
+        //     Prover::prove(
+        //         config,
+        //         &mut challenger.clone(),
+        //         &global_chips,
+        //         global_main_data,
+        //     )
+        // });
 
-        // Compute the cumulative bus sum from all segments
-        // Make sure that this cumulative bus sum is 0.
-        #[cfg(not(feature = "perf"))]
-        debug_cumulative_sums::<F, EF>(&all_permutation_traces);
+        // let mut all_permutation_traces = proofs
+        //     .into_iter()
+        //     .flat_map(|proof| proof.permutation_traces)
+        //     .collect::<Vec<_>>();
+        // all_permutation_traces.extend(global_proof.permutation_traces);
+
+        // // Compute the cumulative bus sum from all segments
+        // // Make sure that this cumulative bus sum is 0.
+        // #[cfg(not(feature = "perf"))]
+        // debug_cumulative_sums::<F, EF>(&all_permutation_traces);
     }
 }
 

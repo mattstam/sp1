@@ -24,11 +24,7 @@ pub(crate) struct Prover<SC>(PhantomData<SC>);
 
 impl<SC: StarkConfig> Prover<SC> {
     /// Commit to the main data
-    pub fn commit_main(
-        config: &SC,
-        chips: &[Box<dyn AirChip<SC>>],
-        segment: &mut Segment,
-    ) -> MainData<SC>
+    pub fn commit_main(config: &SC, chips: &[Box<dyn AirChip<SC>>], segment: &mut Segment)
     where
         SC::Val: PrimeField32,
     {
@@ -41,11 +37,11 @@ impl<SC: StarkConfig> Prover<SC> {
         // Commit to the batch of traces.
         let (main_commit, main_data) = config.pcs().commit_batches(traces.to_vec());
 
-        MainData {
-            traces,
-            main_commit,
-            main_data,
-        }
+        // MainData {
+        //     traces,
+        //     main_commit,
+        //     main_data,
+        // }
     }
 
     /// Prove the program for the given segment and given a commitment to the main data.
