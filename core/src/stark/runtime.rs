@@ -104,6 +104,8 @@ impl Runtime {
                     .collect::<Vec<_>>()
             });
 
+        panic!("commit main for all segments");
+
         // TODO: Observe the challenges in a tree-like structure for easily verifiable reconstruction
         // in a map-reduce recursion setting.
         tracing::info_span!("observe challenges for all segments").in_scope(|| {
