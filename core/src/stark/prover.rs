@@ -1,4 +1,7 @@
+use std::fs::File;
+use std::io::BufWriter;
 use std::marker::PhantomData;
+use std::path::Path;
 
 #[cfg(not(feature = "perf"))]
 use crate::stark::debug_constraints;
@@ -7,6 +10,7 @@ use crate::runtime::Segment;
 use crate::stark::permutation::generate_permutation_trace;
 use crate::stark::quotient_values;
 use crate::utils::AirChip;
+use bincode::serialize_into;
 use p3_challenger::{CanObserve, FieldChallenger};
 use p3_commit::{Pcs, UnivariatePcs, UnivariatePcsWithLde};
 use p3_field::{AbstractExtensionField, AbstractField};
@@ -17,6 +21,8 @@ use p3_uni_stark::decompose_and_flatten;
 use p3_uni_stark::StarkConfig;
 use p3_util::log2_ceil_usize;
 use p3_util::log2_strict_usize;
+use serde::de::DeserializeOwned;
+use serde::Serialize;
 
 use super::types::*;
 
@@ -27,6 +33,7 @@ impl<SC: StarkConfig> Prover<SC> {
     pub fn commit_main(config: &SC, chips: &[Box<dyn AirChip<SC>>], segment: &mut Segment)
     where
         SC::Val: PrimeField32,
+        PcsProverData<SC>: Serialize,
     {
         // For each chip, generate the trace.
         let traces = chips
@@ -36,6 +43,17 @@ impl<SC: StarkConfig> Prover<SC> {
 
         // Commit to the batch of traces.
         let (main_commit, main_data) = config.pcs().commit_batches(traces.to_vec());
+
+        // Save commit and data to disk with a buff writer.
+        let commit_file_name = format!("main_commit_{}", segment.index);
+        let commit_path = Path::new(&commit_file_name);
+        let mut commit_file = BufWriter::new(File::create(commit_path).unwrap());
+        serialize_into(&mut commit_file, &main_commit).unwrap();
+
+        let data_file_name = format!("main_data_{}", segment.index);
+        let data_path = Path::new(&data_file_name);
+        let mut data_file = BufWriter::new(File::create(data_path).unwrap());
+        serialize_into(&mut data_file, &main_data).unwrap();
 
         // MainData {
         //     traces,

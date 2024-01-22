@@ -12,6 +12,8 @@ use crate::program::ProgramChip;
 use crate::runtime::Runtime;
 use crate::utils::AirChip;
 use p3_challenger::CanObserve;
+use serde::de::DeserializeOwned;
+use serde::Serialize;
 
 #[cfg(not(feature = "perf"))]
 use crate::stark::debug_cumulative_sums;
@@ -93,6 +95,7 @@ impl Runtime {
         SC::Challenger: Clone,
         <SC::Pcs as Pcs<SC::Val, RowMajorMatrix<SC::Val>>>::Commitment: Send + Sync,
         <SC::Pcs as Pcs<SC::Val, RowMajorMatrix<SC::Val>>>::ProverData: Send + Sync,
+        PcsProverData<SC>: Serialize,
     {
         tracing::info!("nb_segments: {}", self.segments.len());
         let segment_chips = Self::segment_chips::<SC>();

@@ -9,7 +9,7 @@ type Challenge<SC> = <SC as StarkConfig>::Challenge;
 type ValMat<SC> = RowMajorMatrix<Val<SC>>;
 type ChallengeMat<SC> = RowMajorMatrix<Challenge<SC>>;
 type Com<SC> = <<SC as StarkConfig>::Pcs as Pcs<Val<SC>, ValMat<SC>>>::Commitment;
-type PcsProverData<SC> = <<SC as StarkConfig>::Pcs as Pcs<Val<SC>, ValMat<SC>>>::ProverData;
+pub type PcsProverData<SC> = <<SC as StarkConfig>::Pcs as Pcs<Val<SC>, ValMat<SC>>>::ProverData;
 
 pub type QuotientOpenedValues<T> = Vec<T>;
 
