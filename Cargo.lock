@@ -314,7 +314,7 @@ dependencies = [
  "rand",
  "reqwest",
  "serde",
- "succinct-core",
+ "succinct-core-backend",
  "tar",
  "tokio",
 ]
@@ -670,7 +670,7 @@ checksum = "27573eac26f4dd11e2b1916c3fe1baa56407c83c71a773a8ba17ec0bca03b6b7"
 name = "fibonacci-example"
 version = "0.1.0"
 dependencies = [
- "succinct-core",
+ "succinct-core-backend",
 ]
 
 [[package]]
@@ -1043,7 +1043,7 @@ name = "io-example"
 version = "0.1.0"
 dependencies = [
  "serde",
- "succinct-core",
+ "succinct-core-backend",
 ]
 
 [[package]]
@@ -2278,7 +2278,53 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "81cdd64d312baedb58e21336b31bc043b77e01cc99033ce76ef539f78e965ebc"
 
 [[package]]
-name = "succinct-core"
+name = "succinct-core-backend"
+version = "0.1.0"
+dependencies = [
+ "bincode",
+ "clap",
+ "criterion",
+ "curve25519-dalek",
+ "elf",
+ "elliptic-curve",
+ "env_logger",
+ "hex",
+ "itertools 0.12.1",
+ "k256",
+ "log",
+ "nohash-hasher",
+ "num",
+ "p3-air",
+ "p3-baby-bear",
+ "p3-challenger",
+ "p3-commit",
+ "p3-dft",
+ "p3-field",
+ "p3-fri",
+ "p3-goldilocks",
+ "p3-keccak",
+ "p3-keccak-air",
+ "p3-ldt",
+ "p3-matrix",
+ "p3-maybe-rayon",
+ "p3-mds",
+ "p3-merkle-tree",
+ "p3-poseidon2",
+ "p3-symmetric",
+ "p3-uni-stark",
+ "p3-util",
+ "rand",
+ "rrs-lib",
+ "serde",
+ "tracing",
+ "tracing-forest",
+ "tracing-log",
+ "tracing-subscriber",
+ "valida-derive",
+]
+
+[[package]]
+name = "succinct-core-frontend"
 version = "0.1.0"
 dependencies = [
  "bincode",

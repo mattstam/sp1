@@ -1,7 +1,7 @@
 use anyhow::Result;
 use clap::Parser;
 use std::{env, fs, process::Command};
-use succinct_core::{
+use succinct_core_backend::{
     runtime::{Program, Runtime},
     utils::{self, prove_core},
 };

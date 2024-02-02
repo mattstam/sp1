@@ -4,5 +4,5 @@ name = "io-example"
 edition = "2021"
 
 [dependencies]
-succinct-core = { path = "../../core" }
+succinct-core-backend = { path = "../../core-backend" }
 serde = { version = "1.0", features = ["derive"] }
