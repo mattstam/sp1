@@ -6,3 +6,6 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+p3-commit = { workspace = true }
+sp1-zkvm = { path = "../zkvm/entrypoint" }
+sp1-core = { path = "../core" }

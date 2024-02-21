@@ -1857,6 +1857,11 @@ dependencies = [
 [[package]]
 name = "recursion"
 version = "0.1.0"
+dependencies = [
+ "p3-commit",
+ "sp1-core",
+ "sp1-zkvm",
+]
 
 [[package]]
 name = "redox_syscall"
